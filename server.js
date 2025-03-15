@@ -36,6 +36,11 @@ app.post('/download', async (req, res) => {
     res.json({ downloadLink });
   } catch (error) {
     console.error('Error fetching video details:', error); // Log error details
+
+    if (error.statusCode === 410) {
+      return res.status(404).json({ error: 'The video has been deleted or is no longer available.' });
+    }
+
     res.status(500).json({ error: 'Failed to fetch video details' });
   }
 });
